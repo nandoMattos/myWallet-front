@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import ButtonStyle from "../../assets/styles/ButtonStyle";
-import InputStyle from "../../assets/styles/InputStyle";
-import { PageContainer, PageMain } from "../../assets/styles/PageStyle";
+import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
+import InputStyle from "../../assets/styles/Inputs/InputStyle";
+import { PageMain } from "../../assets/styles/Authentication/AuthPageStyle";
 import { SMALL_HEIGHT } from "../../constants/sizes";
+import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -21,13 +22,11 @@ export default function SignUp() {
     });
   }
 
-  console.log(form);
-
   return (
     <Container>
       <Main height="450px">
         <h1>My Wallet</h1>
-        <Form>
+        <Form height="75%" width="500px">
           <Input
             type="text"
             name="name"
@@ -60,7 +59,9 @@ export default function SignUp() {
             required
             placeholder="Confirme a senha"
           />
-          <Button height={SMALL_HEIGHT}>Cadastrar</Button>
+          <Button height={SMALL_HEIGHT} width="100%">
+            Cadastrar
+          </Button>
         </Form>
 
         <Link to="/sign-in">Já tem uma conta? Entre agora!</Link>
@@ -68,16 +69,7 @@ export default function SignUp() {
     </Container>
   );
 }
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: space-around;
-  height: 75%;
-  width: 500px;
-`;
-
+const Form = styled(PageForm)``;
 const Container = styled(PageContainer)``;
 const Main = styled(PageMain)``;
 const Input = styled(InputStyle)``;

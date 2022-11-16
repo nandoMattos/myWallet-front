@@ -1,19 +1,17 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import ButtonStyle from "../../assets/styles/ButtonStyle";
-import InputStyle from "../../assets/styles/InputStyle";
-import { PageContainer, PageMain } from "../../assets/styles/PageStyle";
+import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
+import InputStyle from "../../assets/styles/Inputs/InputStyle";
+import { PageMain } from "../../assets/styles/Authentication/AuthPageStyle";
 import { SMALL_HEIGHT } from "../../constants/sizes";
+import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 
 export default function SignIn() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-
-  console.log(form);
 
   function handleForm(e) {
     setForm({
@@ -22,21 +20,15 @@ export default function SignIn() {
     });
   }
 
-  async function TryLogin(e) {
+  function tryLogin(e) {
     e.preventDefault();
-
-    try {
-      await axios.get();
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   return (
     <Container>
       <Main height="300px">
         <h1>My Wallet</h1>
-        <Form onSubmit={TryLogin}>
+        <Form onSubmit={tryLogin} height="65%" width="500px">
           <Input
             type="email"
             name="email"
@@ -53,7 +45,9 @@ export default function SignIn() {
             required
             placeholder="Senha"
           ></Input>
-          <Button height={SMALL_HEIGHT}>Entrar</Button>
+          <Button height={SMALL_HEIGHT} width="100%">
+            Entrar
+          </Button>
         </Form>
 
         <Link to="/sign-up">Primeira vez? Cadastre-se!</Link>
@@ -62,17 +56,8 @@ export default function SignIn() {
   );
 }
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: space-around;
-  height: 65%;
-  width: 500px;
-`;
-
 const Container = styled(PageContainer)``;
 const Main = styled(PageMain)``;
-const Button = styled(ButtonStyle)``;
+const Form = styled(PageForm)``;
 const Input = styled(InputStyle)``;
+const Button = styled(ButtonStyle)``;

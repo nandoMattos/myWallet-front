@@ -1,9 +1,5 @@
 import styled from "styled-components";
-
-export const PageContainer = styled.div`
-  display: flex;
-  height: 100vh;
-`;
+import { RESPONSIVITY_LIMIT } from "../../../constants/sizes";
 
 export const PageMain = styled.main`
   h1 {
@@ -18,4 +14,8 @@ export const PageMain = styled.main`
   align-items: center;
   justify-content: space-around;
   margin: auto;
+
+  @media (max-width: ${RESPONSIVITY_LIMIT}) {
+    width: 100%;
+  }
 `;

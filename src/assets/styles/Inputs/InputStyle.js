@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { RESPONSIVITY_LIMIT } from "../../../constants/sizes";
 
 const InputStyle = styled.input`
   width: ${({ width }) => width};
@@ -11,6 +12,10 @@ const InputStyle = styled.input`
   width: 100%;
   ::placeholder {
     color: #606060;
+  }
+
+  @media (max-width: ${RESPONSIVITY_LIMIT}) {
+    width: 100%;
   }
 `;
 
