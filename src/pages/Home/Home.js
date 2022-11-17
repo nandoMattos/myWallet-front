@@ -1,5 +1,4 @@
-// import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
 import {
@@ -7,15 +6,48 @@ import {
   PageHeader,
   PageMain,
 } from "../../assets/styles/BasePageStyle";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../contexts/AuthContext";
+import axios from "axios";
+import URLS from "../../constants/URLs";
 
 export default function Home() {
-  // const [records, setRecords] = useState(undefined);
-  // setRecords([...records]);
+  const [username, setUsername] = useState("");
+
+  const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  console.log(auth);
+
+  useEffect(() => {
+    async function verifyToken(config) {
+      try {
+        const res = await axios.get(URLS.revenue, config);
+        setUsername(res.data.name);
+      } catch (err) {
+        console.log(err);
+        navigate("/sign-in");
+      }
+    }
+
+    if (!auth) {
+      return navigate("/sign-in");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    };
+
+    verifyToken(config);
+
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <Container>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {username}</h1>
         <ion-icon name="log-out-outline"></ion-icon>
       </Header>
 

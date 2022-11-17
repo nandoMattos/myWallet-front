@@ -6,6 +6,8 @@ import InputStyle from "../../assets/styles/Inputs/InputStyle";
 import { PageMain } from "../../assets/styles/Authentication/AuthPageStyle";
 import { SMALL_HEIGHT } from "../../constants/sizes";
 import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
+import axios from "axios";
+import URLS from "../../constants/URLs";
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -22,11 +24,31 @@ export default function SignUp() {
     });
   }
 
+  async function trySignUp(e) {
+    e.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      alert("As senhas devem ser iguais.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(URLS.signUp, {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+      console.log(res);
+    } catch (err) {
+      alert(err.response.data.message);
+    }
+  }
+
   return (
     <Container>
       <Main height="450px">
         <h1>My Wallet</h1>
-        <Form height="75%" width="500px">
+        <Form height="75%" width="500px" onSubmit={trySignUp}>
           <Input
             type="text"
             name="name"
@@ -53,6 +75,7 @@ export default function SignUp() {
           />
           <Input
             type="password"
+            minLength={5}
             name="confirmPassword"
             onChange={handleForm}
             value={form.confirmPassword}
