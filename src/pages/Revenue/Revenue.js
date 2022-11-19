@@ -10,36 +10,37 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import axios from "axios";
 import URLS from "../../constants/URLs";
+import RevenueItem from "./RevenueItem";
 
-export default function Home() {
+export default function Revenue() {
   const [username, setUsername] = useState("");
+  const [revenue, setRevenue] = useState([]);
 
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
-  console.log(auth);
+
+  async function getRevenue(config) {
+    try {
+      const res = await axios.get(URLS.revenue, config);
+      setRevenue(res.data.userRevenue);
+    } catch (err) {
+      console.log(err);
+      navigate("/sign-in");
+    }
+  }
 
   useEffect(() => {
-    async function verifyToken(config) {
-      try {
-        const res = await axios.get(URLS.revenue, config);
-        setUsername(res.data.name);
-      } catch (err) {
-        console.log(err);
-        navigate("/sign-in");
-      }
-    }
-
     if (!auth) {
       return navigate("/sign-in");
     }
-
+    setUsername(auth.username);
     const config = {
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
     };
 
-    verifyToken(config);
+    getRevenue(config);
 
     //eslint-disable-next-line
   }, []);
@@ -52,9 +53,21 @@ export default function Home() {
       </Header>
 
       <Main>
-        <DivRecords></DivRecords>
+        <DivRecords>
+          {revenue
+            .map((i) => (
+              <RevenueItem
+                key={i._id}
+                type={i.type}
+                description={i.description}
+                value={i.value}
+                date={i.date}
+              />
+            ))
+            .reverse()}
+        </DivRecords>
         <DivButtons>
-          <ButtonNew as={Link} to="/income" height="130px" width="230px">
+          <ButtonNew as={Link} to="/incomes" height="130px" width="230px">
             <ion-icon name="add-circle-outline"></ion-icon>
             <span>Nova entrada</span>
           </ButtonNew>
@@ -78,12 +91,13 @@ const Header = styled(PageHeader)`
 
 const Main = styled(PageMain)``;
 
-const DivRecords = styled.div`
+const DivRecords = styled.ul`
   background-color: white;
   height: 100%;
   width: 100%;
   border-radius: 5px;
   margin-bottom: 20px;
+  padding: 20px;
 `;
 
 const DivButtons = styled.div`

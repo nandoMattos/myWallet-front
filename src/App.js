@@ -3,11 +3,11 @@ import SignIn from "./pages/Authentication/SignIn";
 import SignUp from "./pages/Authentication/SignUp";
 import ResetCss from "./assets/styles/ResetCss";
 import GlobalStyle from "./assets/styles/GlobalStyle";
-import Home from "./pages/Home/Home";
-import Expenses from "./pages/Expenses/Expenses";
-import Income from "./pages/Income/Income";
 import { useState } from "react";
 import AuthContext from "./contexts/AuthContext";
+import NewIncome from "./pages/Income/NewIncome";
+import Revenue from "./pages/Revenue/Revenue";
+import NewExpense from "./pages/Expense/NewExpense";
 
 export default function App() {
   const [auth, setAuth] = useState(undefined);
@@ -22,9 +22,10 @@ export default function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
 
-            <Route path="/" element={<Home />} />
-            <Route path="/income" element={<Income />} />
-            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/" element={<Revenue />} />
+            <Route path="/revenue" element={<Revenue />} />
+            <Route path="/incomes" element={<NewIncome />} />
+            <Route path="/expenses" element={<NewExpense />} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>

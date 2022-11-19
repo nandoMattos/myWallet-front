@@ -8,10 +8,10 @@ import { SMALL_HEIGHT } from "../../constants/sizes";
 import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 import axios from "axios";
 import URLS from "../../constants/URLs";
-import AuthContext from "../../contexts/AuthContext";
+import authContext from "../../contexts/AuthContext";
 
 export default function SignIn() {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(authContext);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -33,8 +33,8 @@ export default function SignIn() {
         email: form.email,
         password: form.password,
       });
-      setAuth({ token: res.data });
-      navigate("/");
+      setAuth({ token: res.data.token, username: res.data.name });
+      navigate("/revenue");
     } catch (err) {
       alert(err.response.data.message);
     }
@@ -56,6 +56,7 @@ export default function SignIn() {
           <Input
             type="password"
             name="password"
+            minLength={5}
             onChange={handleForm}
             value={form.password}
             required
