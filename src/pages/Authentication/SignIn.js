@@ -9,10 +9,12 @@ import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 import axios from "axios";
 import URLS from "../../constants/URLs";
 import authContext from "../../contexts/AuthContext";
+import { ColorRing } from "react-loader-spinner";
 
 export default function SignIn() {
   const { setAuth } = useContext(authContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -28,6 +30,7 @@ export default function SignIn() {
 
   async function tryLogin(e) {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await axios.post(URLS.signIn, {
         email: form.email,
@@ -37,6 +40,7 @@ export default function SignIn() {
       navigate("/revenue");
     } catch (err) {
       alert(err.response.data.message);
+      setIsLoading(false);
     }
   }
 
@@ -63,7 +67,19 @@ export default function SignIn() {
             placeholder="Senha"
           ></Input>
           <Button height={SMALL_HEIGHT} width="100%">
-            Entrar
+            {isLoading ? (
+              <ColorRing
+                visible={true}
+                height="65"
+                width="65"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["white", "white", "white", "white", "white"]}
+              />
+            ) : (
+              "Entrar"
+            )}
           </Button>
         </Form>
 

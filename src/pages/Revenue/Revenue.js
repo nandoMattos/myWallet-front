@@ -11,6 +11,7 @@ import AuthContext from "../../contexts/AuthContext";
 import axios from "axios";
 import URLS from "../../constants/URLs";
 import RevenueItem from "./RevenueItem";
+import { RESPONSIVITY_LIMIT } from "../../constants/sizes";
 
 export default function Revenue() {
   const [username, setUsername] = useState("");
@@ -89,15 +90,22 @@ const Header = styled(PageHeader)`
   }
 `;
 
-const Main = styled(PageMain)``;
+const Main = styled(PageMain)`
+  height: 80vh;
+`;
 
 const DivRecords = styled.ul`
   background-color: white;
-  height: 100%;
+  height: 70%;
   width: 100%;
   border-radius: 5px;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 10px 20px;
+  overflow-x: scroll;
+
+  @media (max-width: ${RESPONSIVITY_LIMIT}) {
+    height: 100%;
+  }
 `;
 
 const DivButtons = styled.div`
@@ -119,5 +127,11 @@ const ButtonNew = styled(ButtonStyle)`
   }
   ion-icon {
     font-size: 50px;
+  }
+
+  @media (max-width: ${RESPONSIVITY_LIMIT}) {
+    height: 120px;
+    width: 230px;
+    margin: 0 10px;
   }
 `;

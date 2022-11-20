@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageContainer,
@@ -13,13 +13,21 @@ import GoBackButton from "../../components/GoBackButton";
 import URLS from "../../constants/URLs";
 import authContext from "../../contexts/AuthContext";
 import { ColorRing } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function NewIncome() {
   const [form, setForm] = useState({ value: "", description: "" });
   const [isLoading, setIsLoading] = useState(false);
 
   const { auth } = useContext(authContext);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!auth) {
+      navigate("/sign-in");
+    }
+    //eslint-disable-next-line
+  }, []);
   function handleForm(e) {
     setForm({
       ...form,
@@ -29,6 +37,7 @@ export default function NewIncome() {
 
   async function saveIncome(e) {
     e.preventDefault();
+
     setIsLoading(true);
     const config = {
       headers: {
@@ -43,7 +52,7 @@ export default function NewIncome() {
     axios
       .post(URLS.incomes, body, config)
       .then(() => setIsLoading(false))
-      .catch((err) => console.log(err));
+      .catch(() => navigate("/sign-in"));
   }
 
   return (
@@ -60,6 +69,7 @@ export default function NewIncome() {
             value={form.value}
             onChange={handleForm}
             placeholder="Valor"
+            max={9999999}
             required
           />
           <Input
@@ -68,6 +78,7 @@ export default function NewIncome() {
             value={form.description}
             onChange={handleForm}
             placeholder="Descrição"
+            maxLength={13}
             required
           />
           <Button width="650px" height="50px">

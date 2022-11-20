@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
 import InputStyle from "../../assets/styles/Inputs/InputStyle";
@@ -8,6 +8,7 @@ import { SMALL_HEIGHT } from "../../constants/sizes";
 import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 import axios from "axios";
 import URLS from "../../constants/URLs";
+import { ColorRing } from "react-loader-spinner";
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -16,6 +17,10 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleForm(e) {
     setForm({
@@ -26,21 +31,23 @@ export default function SignUp() {
 
   async function trySignUp(e) {
     e.preventDefault();
+    setIsLoading(true);
 
     if (form.password !== form.confirmPassword) {
       alert("As senhas devem ser iguais.");
+      setIsLoading(false);
       return;
     }
-
     try {
-      const res = await axios.post(URLS.signUp, {
+      await axios.post(URLS.signUp, {
         name: form.name,
         email: form.email,
         password: form.password,
       });
-      console.log(res);
+      navigate("/sign-in");
     } catch (err) {
       alert(err.response.data.message);
+      setIsLoading(false);
     }
   }
 
@@ -83,7 +90,19 @@ export default function SignUp() {
             placeholder="Confirme a senha"
           />
           <Button height={SMALL_HEIGHT} width="100%">
-            Cadastrar
+            {isLoading ? (
+              <ColorRing
+                visible={true}
+                height="65"
+                width="65"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["white", "white", "white", "white", "white"]}
+              />
+            ) : (
+              "Cadastrar"
+            )}
           </Button>
         </Form>
 
