@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageContainer,
@@ -11,7 +11,6 @@ import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
 import InputStyle from "../../assets/styles/Inputs/InputStyle";
 import GoBackButton from "../../components/GoBackButton";
 import URLS from "../../constants/URLs";
-import authContext from "../../contexts/AuthContext";
 import { ColorRing } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
@@ -19,9 +18,9 @@ export default function NewExpense() {
   const [form, setForm] = useState({ value: "", description: "" });
   const [isLoading, setIsLoading] = useState(false);
 
-  const { auth } = useContext(authContext);
   const navigate = useNavigate();
 
+  const auth = JSON.parse(sessionStorage.getItem("auth"));
   useEffect(() => {
     if (!auth) {
       navigate("/sign-in");
@@ -80,7 +79,7 @@ export default function NewExpense() {
             onChange={handleForm}
             name="description"
             placeholder="Descrição"
-            maxLength={13}
+            maxLength={20}
             required
           />
           <Button width="650px" height="50px">

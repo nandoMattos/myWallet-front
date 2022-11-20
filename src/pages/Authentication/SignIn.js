@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
@@ -8,11 +8,9 @@ import { SMALL_HEIGHT } from "../../constants/sizes";
 import { PageContainer, PageForm } from "../../assets/styles/BasePageStyle";
 import axios from "axios";
 import URLS from "../../constants/URLs";
-import authContext from "../../contexts/AuthContext";
 import { ColorRing } from "react-loader-spinner";
 
 export default function SignIn() {
-  const { setAuth } = useContext(authContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +34,10 @@ export default function SignIn() {
         email: form.email,
         password: form.password,
       });
-      setAuth({ token: res.data.token, username: res.data.name });
+      sessionStorage.setItem(
+        "auth",
+        JSON.stringify({ token: res.data.token, name: res.data.name })
+      );
       navigate("/revenue");
     } catch (err) {
       alert(err.response.data.message);

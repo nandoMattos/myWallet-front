@@ -6,6 +6,10 @@ export const PageContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   padding: 60px;
+
+  @media (max-width: 600px) {
+    padding: 30px 10px;
+  }
 `;
 
 export const PageHeader = styled.header`

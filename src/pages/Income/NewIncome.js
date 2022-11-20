@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageContainer,
@@ -11,7 +11,6 @@ import ButtonStyle from "../../assets/styles/Inputs/ButtonStyle";
 import InputStyle from "../../assets/styles/Inputs/InputStyle";
 import GoBackButton from "../../components/GoBackButton";
 import URLS from "../../constants/URLs";
-import authContext from "../../contexts/AuthContext";
 import { ColorRing } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
@@ -19,8 +18,9 @@ export default function NewIncome() {
   const [form, setForm] = useState({ value: "", description: "" });
   const [isLoading, setIsLoading] = useState(false);
 
-  const { auth } = useContext(authContext);
   const navigate = useNavigate();
+
+  const auth = JSON.parse(sessionStorage.getItem("auth"));
 
   useEffect(() => {
     if (!auth) {
@@ -28,6 +28,7 @@ export default function NewIncome() {
     }
     //eslint-disable-next-line
   }, []);
+
   function handleForm(e) {
     setForm({
       ...form,
@@ -78,7 +79,7 @@ export default function NewIncome() {
             value={form.description}
             onChange={handleForm}
             placeholder="Descrição"
-            maxLength={13}
+            maxLength={20}
             required
           />
           <Button width="650px" height="50px">
