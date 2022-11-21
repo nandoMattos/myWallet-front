@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import URLS from "../../constants/URLs";
 
-export default function RevenueItem({ type, id, description, value, date }) {
+export default function RevenueItem({
+  type,
+  id,
+  description,
+  value,
+  date,
+  setIsLoading,
+}) {
   const [isHovered, setIsHovered] = useState(false);
 
   const navigate = useNavigate();
@@ -20,19 +27,17 @@ export default function RevenueItem({ type, id, description, value, date }) {
     );
 
     if (response) {
+      setIsLoading(true);
       const config = {
         headers: {
           authorization: `Bearer ${auth.token}`,
         },
       };
 
-      axios
-        .delete(`${URLS.revenue}/${id}`, config, {})
-        .then(window.location.reload())
-        .catch((err) => {
-          console.log(err);
-          navigate("/sign-in");
-        });
+      axios.delete(`${URLS.revenue}/${id}`, config, {}).catch((err) => {
+        console.log(err);
+        navigate("/sign-in");
+      });
     }
   }
 

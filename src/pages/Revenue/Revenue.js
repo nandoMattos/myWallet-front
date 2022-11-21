@@ -70,7 +70,7 @@ export default function Revenue() {
     getRevenue(config);
 
     //eslint-disable-next-line
-  }, []);
+  }, [isLoading]);
 
   return (
     <Container>
@@ -107,6 +107,7 @@ export default function Revenue() {
                   description={i.description}
                   value={i.value}
                   date={i.date}
+                  setIsLoading={setIsLoading}
                 />
               ))
               .reverse()
